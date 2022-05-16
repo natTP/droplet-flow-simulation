@@ -1,6 +1,13 @@
-import { Clock, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
-import Stats from 'https://unpkg.com/three@0.139.2/examples/jsm/libs/stats.module.js'
-import { OrbitControls } from 'https://unpkg.com/three@0.139.2/examples/jsm/controls/OrbitControls.js'
+import {
+    AmbientLight,
+    Clock,
+    Color,
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
+} from 'three'
+import Stats from 'three/examples/jsm/libs/stats.module.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { createPlaneMesh } from './meshes'
 
 let renderer, camera, scene, stats
@@ -41,6 +48,10 @@ function init() {
     /* Create the floor */
     const planeMesh = createPlaneMesh(40)
     scene.add(planeMesh)
+
+    /* Add lighting */
+    const light = new AmbientLight(0xffffff, 1)
+    scene.add(light)
 
     // TODO : Particles
 }

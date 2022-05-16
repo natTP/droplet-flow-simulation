@@ -1,9 +1,8 @@
 import { PlaneGeometry, MeshPhongMaterial, DoubleSide, Mesh } from 'three'
-// import { loadPlaneTexture } from './utils/loadTexture'
+import { loadPlaneTexture } from './utils/loadTexture'
 
 function createPlaneMesh(planeSize) {
     const geometry = new PlaneGeometry(planeSize, planeSize)
-    // const material = new MeshPhongMaterial({ color: 0x123456 })
     const material = new MeshPhongMaterial({
         map: loadPlaneTexture(planeSize),
         side: DoubleSide,
