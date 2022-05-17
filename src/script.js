@@ -8,7 +8,8 @@ import {
 } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { createPlaneMesh } from './meshes'
+import { addParticles, addPlaneMesh } from './meshes'
+import { addAxesHelper } from './utils/addHelper'
 
 let renderer, camera, scene, stats
 const clock = new Clock()
@@ -41,19 +42,24 @@ function init() {
     controls.target.set(0, 5, 0)
     controls.update()
 
-    /* Setup Stats which shows fps */
+    /* Setup Stats panels next to each other */
     stats = new Stats()
-    canvas.appendChild(stats.dom)
-
-    /* Create the floor */
-    const planeMesh = createPlaneMesh(40)
-    scene.add(planeMesh)
+    const panels = [0, 1, 2] // 0: fps, 1: ms, 2: mb
+    Array.from(stats.domElement.children).forEach((child, index) => {
+        child.style.display = panels.includes(index) ? 'inline-block' : 'none'
+    })
+    document.body.appendChild(stats.domElement)
 
     /* Add lighting */
     const light = new AmbientLight(0xffffff, 1)
     scene.add(light)
 
-    // TODO : Particles
+    /* Populate the scene with stuff */
+    addPlaneMesh(scene, 40)
+    addParticles(scene, 100)
+
+    /* Add helpers */
+    addAxesHelper(scene, 30)
 }
 
 function onWindowResize() {
@@ -69,7 +75,23 @@ function animate() {
 }
 
 function render() {
-    const time = clock.getDelta()
-    // TODO: do something
+    const time = clock.getElapsedTime() * 0.05
+
+    const particles = scene.getObjectByName('particles')
+    const h = ((360 * (1.0 + time)) % 360) / 360
+    particles.material.color.setHSL(h, 0.5, 0.5)
+    particles.material.size = 0.3 * Math.sin(10 * time) + 0.5
+    particles.rotation.y = time
+
     renderer.render(scene, camera)
+
+    /* Setup devtools */
+    if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+        __THREE_DEVTOOLS__.dispatchEvent(
+            new CustomEvent('observe', { detail: scene })
+        )
+        __THREE_DEVTOOLS__.dispatchEvent(
+            new CustomEvent('observe', { detail: renderer })
+        )
+    }
 }
