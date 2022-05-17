@@ -24,13 +24,19 @@ function addPlaneMesh(scene, planeSize) {
 }
 
 function addRampMesh(scene, width, length, angle) {
-    const geometry = new BoxGeometry(width, length, 2)
+    const geometry = new BoxGeometry(width, length, 0.01)
     const material = new MeshPhongMaterial({ color: 0x34cceb })
     const rampMesh = new Mesh(geometry, material)
     rampMesh.rotation.x = Math.PI * -0.5 + angle
     scene.add(rampMesh)
 }
 
+/*TODO  Create instances of droplets which are controlled by instance-atrributes.
+A mesh will keep the instance-attributes, and we will render droplets based on 
+the values found in these buffers. */
+function addDroplets() {}
+
+// Deprecated.
 function addParticles(scene, particleCount) {
     const geometry = new BufferGeometry()
     const vertices = []

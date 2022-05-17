@@ -7,6 +7,7 @@ import { addLights } from './lights'
 
 let renderer, camera, scene, stats
 const clock = new Clock()
+const droplets = []
 
 init()
 animate()
@@ -49,8 +50,8 @@ function init() {
 
     /* Populate the scene with stuff */
     addPlaneMesh(scene, 40)
-    addRampMesh(scene, 30, 20, Math.PI * 0.15)
-    addParticles(scene, 100)
+    addRampMesh(scene, 30, 10, Math.PI * 0.3)
+    // addParticles(scene, 100)
 
     /* Add helpers */
     addAxesHelper(scene, 30)
@@ -71,11 +72,11 @@ function animate() {
 function render() {
     const time = clock.getElapsedTime() * 0.05
 
-    const particles = scene.getObjectByName('particles')
-    const h = ((360 * (1.0 + time)) % 360) / 360
-    particles.material.color.setHSL(h, 0.5, 0.5)
-    particles.material.size = 0.3 * Math.sin(10 * time) + 0.5
-    particles.rotation.y = time
+    // const particles = scene.getObjectByName('particles')
+    // const h = ((360 * (1.0 + time)) % 360) / 360
+    // particles.material.color.setHSL(h, 0.5, 0.5)
+    // particles.material.size = 0.3 * Math.sin(10 * time) + 0.5
+    // particles.rotation.y = time
 
     renderer.render(scene, camera)
 
