@@ -1,15 +1,9 @@
-import {
-    AmbientLight,
-    Clock,
-    Color,
-    PerspectiveCamera,
-    Scene,
-    WebGLRenderer,
-} from 'three'
+import { Clock, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { addParticles, addPlaneMesh } from './meshes'
+import { addParticles, addPlaneMesh, addRampMesh } from './meshes'
 import { addAxesHelper } from './utils/addHelper'
+import { addLights } from './lights'
 
 let renderer, camera, scene, stats
 const clock = new Clock()
@@ -50,12 +44,12 @@ function init() {
     })
     document.body.appendChild(stats.domElement)
 
-    /* Add lighting */
-    const light = new AmbientLight(0xffffff, 1)
-    scene.add(light)
+    /* Add lighting and light helpers*/
+    addLights(scene)
 
     /* Populate the scene with stuff */
     addPlaneMesh(scene, 40)
+    addRampMesh(scene, 30, 20, Math.PI * 0.15)
     addParticles(scene, 100)
 
     /* Add helpers */

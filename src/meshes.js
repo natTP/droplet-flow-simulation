@@ -7,6 +7,7 @@ import {
     Float32BufferAttribute,
     PointsMaterial,
     Points,
+    BoxGeometry,
 } from 'three'
 import { loadPlaneTexture } from './utils/loadTexture'
 
@@ -19,8 +20,15 @@ function addPlaneMesh(scene, planeSize) {
     const planeMesh = new Mesh(geometry, material)
     planeMesh.name = 'plane'
     planeMesh.rotation.x = Math.PI * -0.5
-
     scene.add(planeMesh)
+}
+
+function addRampMesh(scene, width, length, angle) {
+    const geometry = new BoxGeometry(width, length, 2)
+    const material = new MeshPhongMaterial({ color: 0x34cceb })
+    const rampMesh = new Mesh(geometry, material)
+    rampMesh.rotation.x = Math.PI * -0.5 + angle
+    scene.add(rampMesh)
 }
 
 function addParticles(scene, particleCount) {
@@ -46,4 +54,4 @@ function addParticles(scene, particleCount) {
     scene.add(particles)
 }
 
-export { addPlaneMesh, addParticles }
+export { addPlaneMesh, addRampMesh, addParticles }
