@@ -1,7 +1,7 @@
 import { Clock, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { addParticles, addPlaneMesh, addRampMesh } from './meshes'
+import { addDroplets, addParticles, addPlaneMesh, addRampMesh } from './meshes'
 import { addAxesHelper } from './utils/addHelper'
 import { addLights } from './lights'
 
@@ -50,8 +50,8 @@ function init() {
 
     /* Populate the scene with stuff */
     addPlaneMesh(scene, 40)
-    addRampMesh(scene, 30, 10, Math.PI * 0.3)
-    // addParticles(scene, 100)
+    addRampMesh(scene, 30, 20, Math.PI * 0.3)
+    addDroplets(scene, 10, 1, droplets)
 
     /* Add helpers */
     addAxesHelper(scene, 30)

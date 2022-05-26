@@ -5,10 +5,12 @@ import {
     Mesh,
     BufferGeometry,
     Float32BufferAttribute,
-    PointsMaterial,
-    Points,
     BoxGeometry,
+    InstancedBufferGeometry,
+    InstancedBufferAttribute,
+    ShaderMaterial,
 } from 'three'
+import Droplet from './droplet'
 import { loadPlaneTexture } from './utils/loadTexture'
 
 function addPlaneMesh(scene, planeSize) {
@@ -28,36 +30,36 @@ function addRampMesh(scene, width, length, angle) {
     const material = new MeshPhongMaterial({ color: 0x34cceb })
     const rampMesh = new Mesh(geometry, material)
     rampMesh.rotation.x = Math.PI * -0.5 + angle
+    rampMesh.name = 'ramp'
     scene.add(rampMesh)
 }
 
-/*TODO  Create instances of droplets which are controlled by instance-atrributes.
+/* Create instances of droplets which are controlled by instance-atrributes.
 A mesh will keep the instance-attributes, and we will render droplets based on 
 the values found in these buffers. */
-function addDroplets() {}
+// TODO : Custom shader, change attribute name from position to ioffset -> without shader this won't work
+function addDroplets(scene, numInstances, density, droplets) {
+    const iOffsets = new Float32Array(numInstances * 3)
+    const iScales = new Float32Array(numInstances * 1).fill(1)
 
-// Deprecated.
-function addParticles(scene, particleCount) {
-    const geometry = new BufferGeometry()
-    const vertices = []
-    for (let i = 0; i < particleCount; i++) {
-        const x = 40 * Math.random() - 20
-        const y = 20 * Math.random()
-        const z = 40 * Math.random() - 20
-        vertices.push(x, y, z)
+    const geometry = new InstancedBufferGeometry().copy(Droplet.getGeometry())
+    geometry.instanceCount = Infinity
+    geometry.setAttribute('iScale', new InstancedBufferAttribute(iScales, 1))
+
+    const material = Droplet.getMaterial()
+
+    for (let idx = 0; idx < numInstances; idx++) {
+        droplets.push(
+            new Droplet(idx, density, {
+                iOffset: iOffsets,
+                iScale: iScales,
+            })
+        )
     }
-    geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
 
-    const material = new PointsMaterial({
-        size: 1,
-        sizeAttenuation: true,
-        color: 0xff8cde,
-    })
-
-    const particles = new Points(geometry, material)
-    particles.name = 'particles'
-
-    scene.add(particles)
+    const dropletsMesh = new Mesh(geometry, material)
+    dropletsMesh.name = 'droplets'
+    scene.add(dropletsMesh)
 }
 
-export { addPlaneMesh, addRampMesh, addParticles }
+export { addPlaneMesh, addRampMesh, addDroplets }
