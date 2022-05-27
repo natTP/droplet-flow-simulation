@@ -1,11 +1,11 @@
 import {
     Clock,
-    Color,
     PerspectiveCamera,
     Scene,
     WebGLRenderer,
     WebGLCubeRenderTarget,
     CubeCamera,
+    CubeRefractionMapping,
 } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -66,6 +66,8 @@ function init() {
     /* Add lighting and light helpers*/
     addLights(scene)
 
+    // TODO : Change light angle GUI
+
     /* Populate the scene with stuff */
     addPlaneMesh(scene, config.planeSize)
     addRampMesh(
@@ -75,8 +77,8 @@ function init() {
         config.rampAngle
     )
 
-    // FIXME : Fix black water ;-;
     const cubeRenderTarget = new WebGLCubeRenderTarget(128)
+    cubeRenderTarget.texture.mapping = CubeRefractionMapping
     refractionCamera = new CubeCamera(0.1, 1000, cubeRenderTarget)
     scene.add(refractionCamera)
     addDroplets(scene, config, refractionCamera)
@@ -101,6 +103,8 @@ function animate() {
 function render() {
     const time = clock.getElapsedTime() * 0.05
 
+    const droplets = scene.getObjectByName('droplets')
+    refractionCamera.position.set(0, 0, 1)
     refractionCamera.update(renderer, scene)
 
     // const particles = scene.getObjectByName('particles')

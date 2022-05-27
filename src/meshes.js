@@ -22,7 +22,7 @@ function addPlaneMesh(scene, planeSize) {
 
 function addRampMesh(scene, width, length, angle) {
     const geometry = new BoxGeometry(width, length, 0.01)
-    const material = new MeshPhongMaterial({ color: 0x34cceb })
+    const material = new MeshPhongMaterial({ color: 0x2e3047 })
     const rampMesh = new Mesh(geometry, material)
     rampMesh.rotation.x = Math.PI * -0.5 + angle
     rampMesh.name = 'ramp'

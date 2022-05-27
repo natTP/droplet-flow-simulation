@@ -22,7 +22,7 @@ export default class InstancedDroplets extends Mesh {
             mFresnelBias: { type: 'f', value: 0.1 },
             mFresnelPower: { type: 'f', value: 2.0 },
             mFresnelScale: { type: 'f', value: 1.0 },
-            tCube: { type: 't', value: refractionCamera.renderTarget }, // texture
+            tCube: { type: 't', value: refractionCamera.renderTarget.texture }, // texture
         }
         this.material = new ShaderMaterial({
             vertexShader,
@@ -30,7 +30,6 @@ export default class InstancedDroplets extends Mesh {
             uniforms: this.uniforms,
         })
 
-        console.log(refractionCamera.renderTarget)
         this.init()
         this.update()
     }
