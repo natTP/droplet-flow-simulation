@@ -27,32 +27,4 @@ export default class Droplet {
         // based on basic F = ma, with g and friction considered
         // constrain position to only be on this plane
     }
-
-    // TODO : Get geometry & material
-    static getGeometry() {
-        return new SphereGeometry(1)
-    }
-
-    static getMaterial() {
-        const fragmentShader = `
-        void main(){
-            gl_FragColor = vec4(1.);
-        }
-        `
-
-        const vertexShader = `
-        #define PI 3.14159265359
-        attribute float iScale;
-        void main(){
-            vec3 transformed = position.xyz;
-            transformed *= iScale;
-            gl_Position = projectionMatrix* modelViewMatrix * vec4(transformed, 1.);
-        }
-        `
-        return new ShaderMaterial({
-            fragmentShader,
-            vertexShader,
-            uniforms: {},
-        })
-    }
 }

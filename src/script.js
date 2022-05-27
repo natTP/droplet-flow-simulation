@@ -1,13 +1,31 @@
-import { Clock, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import {
+    Clock,
+    Color,
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
+    WebGLCubeRenderTarget,
+    CubeCamera,
+} from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { addDroplets, addParticles, addPlaneMesh, addRampMesh } from './meshes'
+import { addDroplets, addPlaneMesh, addRampMesh } from './meshes'
 import { addAxesHelper } from './utils/addHelper'
 import { addLights } from './lights'
+import { addGUI } from './gui'
+import { loadBackground } from './utils/loadTexture'
 
-let renderer, camera, scene, stats
+let renderer, camera, refractionCamera, scene, stats
 const clock = new Clock()
-const droplets = []
+let config = {
+    planeSize: 40,
+    rampWidth: 30,
+    rampHeight: 10,
+    rampAngle: Math.PI * 0.3,
+    numInstances: 100,
+    liquidDensity: 1,
+    gravity: -9.8,
+}
 
 init()
 animate()
@@ -16,14 +34,14 @@ function init() {
     /* Setup canvas, scene, camera */
     const canvas = document.querySelector('#c')
     scene = new Scene()
-    scene.background = new Color(0x000104)
+    scene.background = loadBackground()
     camera = new PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
         0.1,
         100
     )
-    camera.position.set(0, 10, 20)
+    camera.position.set(20, 10, 5)
     camera.lookAt(scene.position)
 
     /* Setup responsive renderer */
@@ -49,12 +67,23 @@ function init() {
     addLights(scene)
 
     /* Populate the scene with stuff */
-    addPlaneMesh(scene, 40)
-    addRampMesh(scene, 30, 20, Math.PI * 0.3)
-    addDroplets(scene, 10, 1, droplets)
+    addPlaneMesh(scene, config.planeSize)
+    addRampMesh(
+        scene,
+        config.rampWidth,
+        config.rampHeight * 2,
+        config.rampAngle
+    )
 
-    /* Add helpers */
+    // FIXME : Fix black water ;-;
+    const cubeRenderTarget = new WebGLCubeRenderTarget(128)
+    refractionCamera = new CubeCamera(0.1, 1000, cubeRenderTarget)
+    scene.add(refractionCamera)
+    addDroplets(scene, config, refractionCamera)
+
+    /* Add utils */
     addAxesHelper(scene, 30)
+    addGUI(scene, config, refractionCamera)
 }
 
 function onWindowResize() {
@@ -71,6 +100,8 @@ function animate() {
 
 function render() {
     const time = clock.getElapsedTime() * 0.05
+
+    refractionCamera.update(renderer, scene)
 
     // const particles = scene.getObjectByName('particles')
     // const h = ((360 * (1.0 + time)) % 360) / 360

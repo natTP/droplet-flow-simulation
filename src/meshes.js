@@ -3,14 +3,9 @@ import {
     MeshPhongMaterial,
     DoubleSide,
     Mesh,
-    BufferGeometry,
-    Float32BufferAttribute,
     BoxGeometry,
-    InstancedBufferGeometry,
-    InstancedBufferAttribute,
-    ShaderMaterial,
 } from 'three'
-import Droplet from './droplet'
+import InstancedDroplets from './instancedDroplets'
 import { loadPlaneTexture } from './utils/loadTexture'
 
 function addPlaneMesh(scene, planeSize) {
@@ -34,30 +29,8 @@ function addRampMesh(scene, width, length, angle) {
     scene.add(rampMesh)
 }
 
-/* Create instances of droplets which are controlled by instance-atrributes.
-A mesh will keep the instance-attributes, and we will render droplets based on 
-the values found in these buffers. */
-// TODO : Custom shader, change attribute name from position to ioffset -> without shader this won't work
-function addDroplets(scene, numInstances, density, droplets) {
-    const iOffsets = new Float32Array(numInstances * 3)
-    const iScales = new Float32Array(numInstances * 1).fill(1)
-
-    const geometry = new InstancedBufferGeometry().copy(Droplet.getGeometry())
-    geometry.instanceCount = Infinity
-    geometry.setAttribute('iScale', new InstancedBufferAttribute(iScales, 1))
-
-    const material = Droplet.getMaterial()
-
-    for (let idx = 0; idx < numInstances; idx++) {
-        droplets.push(
-            new Droplet(idx, density, {
-                iOffset: iOffsets,
-                iScale: iScales,
-            })
-        )
-    }
-
-    const dropletsMesh = new Mesh(geometry, material)
+function addDroplets(scene, config, refractionCamera) {
+    const dropletsMesh = new InstancedDroplets(config, refractionCamera)
     dropletsMesh.name = 'droplets'
     scene.add(dropletsMesh)
 }
