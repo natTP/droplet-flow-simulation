@@ -63,8 +63,9 @@ function init() {
     })
     document.body.appendChild(stats.domElement)
 
-    /* Add lighting and light helpers*/
+    /* Add lighting and helpers*/
     addLights(scene)
+    addAxesHelper(scene, 30)
 
     // TODO : Change light angle GUI
 
@@ -77,6 +78,7 @@ function init() {
         config.rampAngle
     )
 
+    /* Setup a CubeCamera to use for environment mapping, then add droplets to scene */
     const cubeRenderTarget = new WebGLCubeRenderTarget(128)
     cubeRenderTarget.texture.mapping = CubeRefractionMapping
     refractionCamera = new CubeCamera(0.1, 1000, cubeRenderTarget)
@@ -84,8 +86,7 @@ function init() {
     scene.add(refractionCamera)
     addDroplets(scene, config, refractionCamera)
 
-    /* Add utils */
-    addAxesHelper(scene, 30)
+    /* Add GUI */
     addGUI(scene, config, refractionCamera)
 }
 
@@ -104,13 +105,10 @@ function animate() {
 function render() {
     const time = clock.getElapsedTime() * 0.05
 
+    const droplets = scene.getObjectByName('droplets')
+    droplets.visible = false
     refractionCamera.update(renderer, scene)
-
-    // const particles = scene.getObjectByName('particles')
-    // const h = ((360 * (1.0 + time)) % 360) / 360
-    // particles.material.color.setHSL(h, 0.5, 0.5)
-    // particles.material.size = 0.3 * Math.sin(10 * time) + 0.5
-    // particles.rotation.y = time
+    droplets.visible = true
 
     renderer.render(scene, camera)
 
