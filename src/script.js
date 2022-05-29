@@ -80,6 +80,7 @@ function init() {
     const cubeRenderTarget = new WebGLCubeRenderTarget(128)
     cubeRenderTarget.texture.mapping = CubeRefractionMapping
     refractionCamera = new CubeCamera(0.1, 1000, cubeRenderTarget)
+    refractionCamera.position.set(0, 0, 1)
     scene.add(refractionCamera)
     addDroplets(scene, config, refractionCamera)
 
@@ -103,8 +104,6 @@ function animate() {
 function render() {
     const time = clock.getElapsedTime() * 0.05
 
-    const droplets = scene.getObjectByName('droplets')
-    refractionCamera.position.set(0, 0, 1)
     refractionCamera.update(renderer, scene)
 
     // const particles = scene.getObjectByName('particles')

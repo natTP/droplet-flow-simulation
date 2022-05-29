@@ -18,7 +18,7 @@ export default class InstancedDroplets extends Mesh {
         this.config = config
         this.droplets = []
         this.uniforms = {
-            mRefractionRatio: { type: 'f', value: 1.02 }, // material
+            mRefractionRatio: { type: 'f', value: 1.33 }, // material
             mFresnelBias: { type: 'f', value: 0.1 },
             mFresnelPower: { type: 'f', value: 2.0 },
             mFresnelScale: { type: 'f', value: 1.0 },
