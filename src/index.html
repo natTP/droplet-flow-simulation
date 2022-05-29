@@ -14,9 +14,31 @@
                 height: 100%;
                 display: block;
             }
+            a {
+                color: #2983ff;
+            }
+            #info {
+                position: absolute;
+                top: 0px;
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+                font-family: sans-serif;
+                text-align: center;
+                z-index: 1;
+            }
         </style>
     </head>
     <body>
+        <div id="info">
+            Source code at
+            <a
+                href="https://github.com/natTP/droplet-flow-simulation"
+                target="_blank"
+                rel="noopener"
+                >Github</a
+            >
+        </div>
         <canvas id="c"></canvas>
     </body>
 </html>

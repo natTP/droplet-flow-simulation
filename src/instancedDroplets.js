@@ -31,7 +31,6 @@ export default class InstancedDroplets extends Mesh {
         })
 
         this.init()
-        this.update()
     }
 
     init() {
@@ -42,47 +41,36 @@ export default class InstancedDroplets extends Mesh {
         const numInstances = this.config.numInstances
         geometry.instanceCount = numInstances
 
-        const offsets = []
-        const scales = []
-        for (let i = 0; i < numInstances; i++) {
-            const rampWidth = this.config.rampWidth,
-                rampHeight = this.config.rampHeight,
-                rampAngle = this.config.rampAngle
-            const x = MathUtils.randFloat(-rampWidth / 2, rampWidth / 2)
-            const y = MathUtils.randFloat(0, rampHeight * Math.sin(rampAngle))
-            const z = -y / Math.tan(rampAngle)
-            const scale = MathUtils.randFloat(0.1, 1)
-
-            offsets.push(x, y, z)
-            scales.push(scale)
-        }
-
+        /* Create buffers */
+        const offsets = new Float32Array(numInstances * 3)
+        const scales = new Float32Array(numInstances)
         geometry.setAttribute(
             'offset',
-            new InstancedBufferAttribute(new Float32Array(offsets), 3, false)
+            new InstancedBufferAttribute(offsets, 3, false)
         )
         geometry.setAttribute(
             'scale',
-            new InstancedBufferAttribute(new Float32Array(scales), 1, false)
+            new InstancedBufferAttribute(scales, 1, false)
         )
 
         this.geometry = geometry
 
-        /* Create droplet objects corresponding to the buffers */
+        /* Create droplet objects, write to buffers when each droplet is created */
         for (let i = 0; i < numInstances; i++) {
             this.droplets.push(
-                new Droplet(i, this.config.liquidDensity, {
-                    offset: offsets,
+                new Droplet(i, this.config, {
+                    position: offsets,
                     scale: scales,
                 })
             )
         }
     }
 
-    update() {
+    update(t) {
         for (let i = 0; i < this.config.numInstances; i++) {
-            this.droplets[i].update()
+            this.droplets[i].update(t)
         }
+        this.geometry.attributes.offset.needsUpdate = true
     }
 
     getBaseGeometry() {

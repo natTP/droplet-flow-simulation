@@ -7,18 +7,27 @@ function addGUI(scene, config, refractionCamera) {
 
     const param = {
         rampAngle: 60,
+        reset: () => {
+            const droplets = scene.getObjectByName('droplets')
+            scene.remove(droplets)
+            addDroplets(scene, config, refractionCamera)
+        },
     }
 
-    gui.add(param, 'rampAngle', 0.1, 90).onChange(() => {
-        config.rampAngle = MathUtils.degToRad(param.rampAngle)
+    gui.add(param, 'reset').name('Reset Simulation')
 
-        const ramp = scene.getObjectByName('ramp')
-        ramp.rotation.x = Math.PI * -0.5 + config.rampAngle
+    gui.add(param, 'rampAngle', 0.1, 90)
+        .name('Ramp Angle (deg)')
+        .onChange(() => {
+            config.rampAngle = MathUtils.degToRad(param.rampAngle)
 
-        const droplets = scene.getObjectByName('droplets')
-        scene.remove(droplets)
-        addDroplets(scene, config, refractionCamera)
-    })
+            const ramp = scene.getObjectByName('ramp')
+            ramp.rotation.x = Math.PI * -0.5 + config.rampAngle
+
+            const droplets = scene.getObjectByName('droplets')
+            scene.remove(droplets)
+            addDroplets(scene, config, refractionCamera)
+        })
 }
 
 export { addGUI }

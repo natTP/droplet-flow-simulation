@@ -6,6 +6,7 @@ import {
     WebGLCubeRenderTarget,
     CubeCamera,
     CubeRefractionMapping,
+    Vector3,
 } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -21,10 +22,12 @@ let config = {
     planeSize: 40,
     rampWidth: 30,
     rampHeight: 10,
-    rampAngle: Math.PI * 0.3,
+    rampAngle: Math.PI * 0.3, // rad
     numInstances: 100,
-    liquidDensity: 1,
-    gravity: -9.8,
+    liquidDensity: 1000, // kg/m3
+    gravity: 9.8, // m/s2
+    staticFriction: 0.94,
+    dynamicFriction: 0.4,
 }
 
 init()
@@ -103,9 +106,11 @@ function animate() {
 }
 
 function render() {
-    const time = clock.getElapsedTime() * 0.05
+    const time = clock.getElapsedTime() * 0.0001 // seconds
 
     const droplets = scene.getObjectByName('droplets')
+    droplets.update(time)
+
     droplets.visible = false
     refractionCamera.update(renderer, scene)
     droplets.visible = true
