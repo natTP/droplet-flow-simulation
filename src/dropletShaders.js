@@ -1,4 +1,7 @@
-/*These uniforms and attributes are supplied by default in Threejs:
+/*
+Shader from https://github.com/stemkoski/stemkoski.github.com/blob/master/Three.js/js/shaders/FresnelShader.js
+
+Note, these uniforms and attributes are supplied by default in Threejs:
 
   // = object.matrixWorld 
   // Converts a position vec4 from local obj space -> world space
