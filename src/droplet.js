@@ -65,7 +65,7 @@ export default class Droplet {
             }
             if (this.position.y < 0) {
                 this.position.setY(0)
-                this.position.setZ(0)
+                this.position.setZ(MathUtils.randFloat(0, 0.2))
             }
 
             this.position.toArray(this.buffers.position, this.offset.position)

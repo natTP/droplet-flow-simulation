@@ -4,7 +4,6 @@ import {
     InstancedBufferGeometry,
     InstancedBufferAttribute,
     SphereGeometry,
-    MathUtils,
 } from 'three'
 import Droplet from './droplet'
 import { vertexShader, fragmentShader } from './dropletShaders'

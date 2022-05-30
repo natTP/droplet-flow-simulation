@@ -6,7 +6,6 @@ import {
     WebGLCubeRenderTarget,
     CubeCamera,
     CubeRefractionMapping,
-    Vector3,
 } from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -24,7 +23,6 @@ let config = {
     rampHeight: 10,
     rampAngle: Math.PI * 0.3, // rad
     numInstances: 100,
-    liquidDensity: 1000, // kg/m3
     gravity: 9.8, // m/s2
     staticFriction: 0.94,
     dynamicFriction: 0.4,
@@ -69,8 +67,6 @@ function init() {
     /* Add lighting and helpers*/
     addLights(scene)
     addAxesHelper(scene, 30)
-
-    // TODO : Change light angle GUI
 
     /* Populate the scene with stuff */
     addPlaneMesh(scene, config.planeSize)

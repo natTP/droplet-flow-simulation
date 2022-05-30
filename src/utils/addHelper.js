@@ -7,6 +7,7 @@ function addAxesHelper(scene, axesSize) {
 
 function addDirectionalLightHelper(scene, light) {
     const helper = new DirectionalLightHelper(light)
+    helper.name = 'lightHelper'
     scene.add(helper)
 }
 
