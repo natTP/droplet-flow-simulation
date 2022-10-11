@@ -24,7 +24,7 @@ Only gravity and friction are considered for the droplet physics. Due to this, a
 
 ## Droplet Instancing
 
-Instancing is a technique used to efficiently render multiple instances of the same geometry when each instance shares the same base geometry and material but differs in transformations. The data of all instances are kept in the same mesh and the data is sent to the GPU only once, allowing for less strain on performance [[1](https://velasquezdaniel.com/blog/rendering-100k-spheres-instantianing-and-drawcalls/)]. 
+Instancing is a technique used to efficiently render multiple instances of the same geometry when each instance shares the same base geometry and material but differs in transformations. The data of all instances are kept in the same mesh and the data is sent to the GPU only once, allowing for less strain on performance [[1](https://velasquezdaniel.com/blog/rendering-100k-spheres-instantianing-and-draw-calls/)]. 
 
 Here, our droplets are all in one single mesh we call an `InstancedDroplets` class. This mesh has a geometry of `THREE.InstancedBufferGeometry` which uses a half sphere shape as the base geometry. On initialization of the `InstancedDroplets` class, buffers are created to store the offset (position) and scale of each instance, then `offset` and `scale` are added as attributes to the geometry. To perform instancing, the GPU accesses these buffers to get the attributes of each instance and uses these values in the shader. 
 
@@ -76,7 +76,7 @@ We also constrain y to not drop beyond 0. See the source code for [droplet.js](h
 
 ## Resources
 ### Instancing
-[1] https://velasquezdaniel.com/blog/rendering-100k-spheres-instantianing-and-drawcalls/
+[1] https://velasquezdaniel.com/blog/rendering-100k-spheres-instantianing-and-draw-calls/
 
 [2] https://codepen.io/usefulthink/pen/YNrvpY?editors=0010
 
