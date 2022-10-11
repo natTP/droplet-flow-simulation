@@ -20,7 +20,7 @@ Build configurations courtesy of https://github.com/designcourse/threejs-webpack
 
 The droplets are created by instancing, with each instance having a varying position and scale. Each droplet’s geometry is modeled as a half sphere with a custom shader applied to the material to simulate reflection and refraction according to the Fresnel effect. The surrounding skybox environment and adjustable ramp color are added to make this refraction effect clearly visible.
 
-Only gravity and friction are considered for the droplet physics. Due to this, acceleration is constant and depends on the friction coefficients and ramp angle. Velocity is updated in every frame by incrementing ( $\vec{v}_{new} = \vec{v}_{old} + \vec{a}(dt)$ ) and position is updated from velocity ( $\vec{x}_{new} = \vec{x}_{old} + \vec{v}_new(dt)$ ). Droplets are constrained to appear and move only on the ramp plane.
+Only gravity and friction are considered for the droplet physics. Due to this, acceleration is constant and depends on the friction coefficients and ramp angle. Velocity is updated in every frame by incrementing and position is updated from velocity. Droplets are constrained to appear and move only on the ramp plane.
 
 ## Droplet Instancing
 
